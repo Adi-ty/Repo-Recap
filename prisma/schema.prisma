@@ -22,7 +22,7 @@ model User {
     
     credits Int @default(200)
 
-    userToProject UserToProject[]
+    userToProjects UserToProject[]
 }
 
 model Project {
@@ -35,7 +35,8 @@ model Project {
     
     deletedAt DateTime?
 
-    userToProject UserToProject[]
+    userToProjects UserToProject[]
+    commits Commit[]
 }
 
 model UserToProject {
@@ -50,4 +51,21 @@ model UserToProject {
     project Project @relation(fields: [projectId], references: [id])
 
     @@unique([userId, projectId])
+}
+
+model Commit {
+    id String @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    projectId String
+    project Project @relation(fields: [projectId], references: [id])
+
+    commitMessage String
+    commitHash String
+    commitAuthorName String
+    commitAuthorAvatar String
+    commitDate DateTime
+    // ai summar
+    summary String
 }
