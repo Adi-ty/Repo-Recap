@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import {
   Sidebar,
   SidebarContent,
@@ -9,9 +10,11 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarMenu,
+  useSidebar,
+  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
-import { BotIcon, Coins, LayoutDashboard, Video } from "lucide-react";
+import { BotIcon, Coins, LayoutDashboard, Plus, Video } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -38,12 +41,29 @@ const items = [
   },
 ];
 
+const projects = [
+  {
+    name: "Project 1",
+  },
+  {
+    name: "Project 2",
+  },
+];
+
 export function AppSidebar() {
   const pathname = usePathname();
+  const { open } = useSidebar();
 
   return (
     <Sidebar collapsible="icon" variant="floating">
-      <SidebarHeader>REPO RECAP</SidebarHeader>
+      <SidebarHeader>
+        <div className="flex items-center justify-between gap-2">
+          {open && (
+            <h1 className="text-xl font-bold text-primary/80">Repo Recap</h1>
+          )}
+          <SidebarTrigger />
+        </div>
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Application</SidebarGroupLabel>
@@ -69,6 +89,48 @@ export function AppSidebar() {
                   </SidebarMenuItem>
                 );
               })}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Your Projects</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {projects.map((project) => {
+                return (
+                  <SidebarMenuItem key={project.name}>
+                    <SidebarMenuButton asChild>
+                      <div>
+                        <div
+                          className={cn(
+                            "flex size-6 items-center justify-center rounded-sm border bg-white text-sm text-primary",
+                            {
+                              "bg-primary text-white": true,
+                              // project.name === project.id,
+                            },
+                          )}
+                        >
+                          {project.name[0]}
+                        </div>
+                        <span>{project.name}</span>
+                      </div>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
+              <div className="h-2"></div>
+
+              {open && (
+                <SidebarMenuItem>
+                  <Link href="/create">
+                    <Button variant={"outline"}>
+                      <Plus />
+                      Create Project
+                    </Button>
+                  </Link>
+                </SidebarMenuItem>
+              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
