@@ -13,6 +13,7 @@ import {
   useSidebar,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import useProject from "@/hooks/use-project";
 import { cn } from "@/lib/utils";
 import { BotIcon, Coins, LayoutDashboard, Plus, Video } from "lucide-react";
 import Link from "next/link";
@@ -41,18 +42,11 @@ const items = [
   },
 ];
 
-const projects = [
-  {
-    name: "Project 1",
-  },
-  {
-    name: "Project 2",
-  },
-];
-
 export function AppSidebar() {
   const pathname = usePathname();
   const { open } = useSidebar();
+
+  const { projects, projectId, setProjectId } = useProject();
 
   return (
     <Sidebar collapsible="icon" variant="floating">
@@ -97,17 +91,19 @@ export function AppSidebar() {
           <SidebarGroupLabel>Your Projects</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {projects.map((project) => {
+              {projects?.map((project) => {
                 return (
-                  <SidebarMenuItem key={project.name}>
+                  <SidebarMenuItem
+                    key={project.id}
+                    onClick={() => setProjectId(project.id)}
+                  >
                     <SidebarMenuButton asChild>
                       <div>
                         <div
                           className={cn(
                             "flex size-6 items-center justify-center rounded-sm border bg-white text-sm text-primary",
                             {
-                              "bg-primary text-white": true,
-                              // project.name === project.id,
+                              "bg-primary text-white": project.id === projectId,
                             },
                           )}
                         >
