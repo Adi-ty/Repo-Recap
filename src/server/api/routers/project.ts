@@ -1,4 +1,5 @@
 import { pollCommits } from "@/lib/github";
+import { indexGithubRepo } from "@/lib/repo-loader";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { z } from "zod";
 
@@ -24,6 +25,7 @@ export const projectRouter = createTRPCRouter({
         },
       });
 
+      await indexGithubRepo(project.id, input.githubUrl, input.githubToken);
       await pollCommits(project.id);
 
       return project;

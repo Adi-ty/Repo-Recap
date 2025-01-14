@@ -1,4 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { Document } from "@langchain/core/documents";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 const model = genAI.getGenerativeModel({
@@ -57,4 +58,32 @@ ${diff}
   ]);
 
   return response.response.text();
+};
+
+export const summariseCode = async (doc: Document) => {
+  try {
+    const code = doc.pageContent.slice(0, 10000); // 10000 character limit
+    const response = await model.generateContent([
+      `You are an expert software engineer specializing in onboarding new developers to a codebase. 
+    You are onboarding a junior software engineer and explaining them the purpose of the ${doc.metadata.source} file.
+    Here is the code:
+    ----
+    ${code}
+    ----
+    Give a summary no more than 100 words explaining the purpose of the code and what it does.`,
+    ]);
+
+    return response.response.text();
+  } catch (error) {
+    return "";
+  }
+};
+
+export const generateEmbedding = async (summary: string) => {
+  const model = genAI.getGenerativeModel({
+    model: "text-embedding-004",
+  });
+  const response = await model.embedContent(summary);
+  const embedding = response.embedding;
+  return embedding.values;
 };
