@@ -37,22 +37,27 @@ export const indexGithubRepo = async (
   const allEmbeddings = await generateEmbeddings(docs);
   await Promise.allSettled(
     allEmbeddings.map(async (embedding, index) => {
-      console.log(`Processing ${index} of ${allEmbeddings.length}`);
-      if (!embedding) return;
+      try {
+        console.log(`Processing ${index} of ${allEmbeddings.length}`);
+        if (!embedding) return;
 
-      const sourceCodeEmbedding = await db.sourceCodeEmbedding.create({
-        data: {
-          summary: embedding.summary,
-          sourceCode: embedding.sourceCode,
-          fileName: embedding.fileName,
-          projectId,
-        },
-      });
+        const sourceCodeEmbedding = await db.sourceCodeEmbedding.create({
+          data: {
+            summary: embedding.summary,
+            sourceCode: embedding.sourceCode,
+            fileName: embedding.fileName,
+            projectId,
+          },
+        });
 
-      await db.$executeRaw`
-    UPDATE "sourceCodeEmbedding" 
+        await db.$executeRaw`
+    UPDATE "SourceCodeEmbedding" 
     SET "summaryEmbedding" = ${embedding.embedding}::vector 
     WHERE "id" = ${sourceCodeEmbedding.id}`;
+      } catch (error) {
+        console.error(error);
+        throw new Error("Failed to index source code embeddings");
+      }
     }),
   );
 };
