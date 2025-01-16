@@ -1,4 +1,5 @@
 "use client";
+import Logo from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import {
   Sidebar,
@@ -52,9 +53,7 @@ export function AppSidebar() {
     <Sidebar collapsible="icon" variant="floating">
       <SidebarHeader>
         <div className="flex items-center justify-between gap-2">
-          {open && (
-            <h1 className="text-xl font-bold text-primary/80">Repo Recap</h1>
-          )}
+          {open && <Logo />}
           <SidebarTrigger />
         </div>
       </SidebarHeader>
