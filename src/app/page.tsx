@@ -4,7 +4,7 @@ import Logo from "@/components/logo";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { SignUpButton, useUser } from "@clerk/nextjs";
+import { SignInButton, useUser } from "@clerk/nextjs";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
@@ -50,9 +50,9 @@ export default function Home() {
             <Logo />
           </div>
           <div className="flex items-center gap-6">
-            <SignUpButton mode="modal">
+            <SignInButton mode="modal">
               <Button>Get Started</Button>
-            </SignUpButton>
+            </SignInButton>
           </div>
         </div>
       </motion.nav>
@@ -84,11 +84,11 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
           >
-            <SignUpButton mode="modal">
+            <SignInButton mode="modal">
               <Button size="lg" className="gap-2">
                 Start Free Trial <ArrowRight className="h-4 w-4" />
               </Button>
-            </SignUpButton>
+            </SignInButton>
           </motion.div>
 
           {/* Stats */}
@@ -207,11 +207,11 @@ export default function Home() {
                 build better software, faster.
               </p>
               <div className="flex justify-center gap-4">
-                <SignUpButton mode="modal">
+                <SignInButton mode="modal">
                   <Button size="lg" className="gap-2">
                     Get Started Now <ArrowRight className="h-4 w-4" />
                   </Button>
-                </SignUpButton>
+                </SignInButton>
               </div>
             </Card>
           </motion.div>
