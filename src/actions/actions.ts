@@ -33,7 +33,7 @@ export async function askQuestion(question: string, projectId: string) {
 
   (async () => {
     const { textStream } = await streamText({
-      model: google("gemini-1.5-flash"),
+      model: google("gemini-2.5-flash"),
       prompt: `
         You are an advanced AI code assistant designed to provide clear, precise, and actionable answers about a given codebase or programming concepts. Your primary audience includes technical interns and developers who need accurate and detailed responses tailored to their queries.
 
