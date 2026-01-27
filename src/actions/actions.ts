@@ -20,8 +20,10 @@ export async function askQuestion(question: string, projectId: string) {
     SELECT "fileName", "sourceCode", "summary",
     1 - ("summaryEmbedding" <=> ${vectorQuery}::vector) AS similarity
     FROM "SourceCodeEmbedding"
-    WHERE 1 - ("summaryEmbedding" <=> ${vectorQuery}::vector) > .5
-    AND "projectId" = ${projectId}
+    -- WHERE 1 - ("summaryEmbedding" <=> ${vectorQuery}::vector) > .5
+    -- AND "projectId" = ${projectId}
+    WHERE "projectId" = ${projectId}
+    AND "summaryEmbedding" IS NOT NULL
     ORDER BY similarity DESC
     LIMIT 10`) as { fileName: string; sourceCode: string; summary: string }[];
 
